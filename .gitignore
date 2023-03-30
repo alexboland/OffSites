@@ -1,0 +1,11 @@
+# ignore ALL .log files
+*.log
+
+# ignore ALL files in ANY directory named the following
+tmp/
+.bsp/
+.idea/
+target/
+project/
+frontend/node_modules/
+frontend/build/
