@@ -18,5 +18,10 @@ libraryDependencies ++= Seq(
   "software.amazon.awssdk" % "s3" % "2.20.26",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "org.postgresql" % "postgresql" % "42.3.3",
-  "org.mindrot" % "jbcrypt" % "0.4"
+  "org.mindrot" % "jbcrypt" % "0.4",
+  "com.auth0" % "java-jwt" % "3.18.1",
+  "io.circe" %% "circe-core" % "0.14.1",
+  "io.circe" %% "circe-generic" % "0.14.1",
+  "io.circe" %% "circe-parser" % "0.14.1",
+  "com.auth0" % "java-jwt" % "3.18.1",
 )
