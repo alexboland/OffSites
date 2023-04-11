@@ -59,6 +59,7 @@ object Database {
   }
 
   def getImageUrl(imageKey: UUID): ConnectionIO[Option[String]] = {
-    sql"""SELECT url FROM images WHERE image_key = ${imageKey: java.util.UUID}::uuid""".query[String].option
+    //add ::uuid back once i'm done testing this thing
+    sql"""SELECT url FROM images WHERE image_key = ${imageKey.toString()}""".query[String].option
   }
 }

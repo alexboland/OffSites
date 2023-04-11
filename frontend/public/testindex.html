@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Stream Example</title>
+</head>
+<body>
+<h1>Image Stream from S3!</h1>
+<button id="load-image">Load Image</button>
+<div>
+    <canvas id="canvas" style="border: 1px solid;"></canvas>
+</div>
+<h1>Drag and Drop File Upload</h1>
+<div id="drop-zone" style="border: 1px solid;">
+    Drag & drop file here
+</div>
+<script>
+
+    // Image upload code
+    const dropZone = document.getElementById('drop-zone');
+        const apiUrl = 'http://localhost:8080/upload'; // Replace with your server's API URL
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = '#f0f0f0';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'transparent';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'transparent';
+
+            const file = e.dataTransfer.files[0];
+            uploadFile(file);
+        });
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch(apiUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then((response) => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Failed to upload file');
+            })
+            .then((result) => {
+                alert('File uploaded: ' + result);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+        }
+
+    // Image download code
+    document.getElementById('load-image').addEventListener('click', async () => {
+      try {
+        const response = await fetch('http://localhost:8080/download/5de2bdbb-754a-4da6-9786-ea8836f992ae');
+        if (!response.ok) {
+            console.log("error");
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        console.log(response);
+        const blob = await response.blob();
+        console.log(blob);
+        const imageUrl = URL.createObjectURL(blob);
+        console.log(imageUrl);
+
+        // Create an image element and draw it on the canvas
+        const imageElement = new Image();
+        imageElement.src = imageUrl;
+        imageElement.onload = () => {
+        console.log("loaded");
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = imageElement.width;
+          canvas.height = imageElement.height;
+          ctx.drawImage(imageElement, 0, 0);
+        };
+      } catch (error) {
+        console.error('Error fetching image:', error);
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
